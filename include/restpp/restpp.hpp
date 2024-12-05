@@ -1,25 +1,24 @@
-//
-// restpp.hpp
-// ~~~~~~~~~~
-//
-// Copyright (c) 2024 Mário A. Moiane (connect@imariom.com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-//  See www.restpp.io/docs for documentation.
-//
+/***
+ * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+ *
+ * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+ *
+ * Import all restpp library functionalities.
+ *
+ * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
+ *
+ * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ ****/
 
+#pragma once
 #ifndef RESTPP_HPP
 #define RESTPP_HPP
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
-#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <restpp/core/options.hpp>
 #include <restpp/core/response.hpp>
 #include <restpp/core/uri.hpp>
 #include <restpp/core/fetch.hpp>
+#include <restpp/core/version.hpp>
 
 #endif // RESTPP_HPP

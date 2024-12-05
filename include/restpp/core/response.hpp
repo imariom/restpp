@@ -1,19 +1,19 @@
-//
-// response.hpp
-// ~~~~~~~~~~~
-//
-// Copyright (c) 2024 Mário A. Moiane (connect at imariom dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
+/***
+ * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+ *
+ * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+ *
+ * HTTP response from the remote server.
+ *
+ * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
+ *
+ * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+ ****/
 
+#pragma once
 #ifndef RESTPP_RESPONSE_H
 #define RESTPP_RESPONSE_H
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#pragma once
-#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <string>
 

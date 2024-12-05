@@ -4,7 +4,7 @@
 
 int main()
 {
-    auto res0 = restpp::fetch("https://jsonplaceholder.typicode.com/todos/4");
+    auto res0 = restpp::fetch("http://www.google.com");
     std::cout << "Status code: " << res0.status_code << '\n';
     std::cout << "Headers: "     << res0.headers << '\n';
     std::cout << "Body: "        << res0.body << '\n';
