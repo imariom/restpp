@@ -1,25 +1,22 @@
-/***
- * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
- * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
- *
- * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+/**
+ * Copyright (C) 2024 Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt in the project root for details.
  *
  * Platform-dependent type definitions
- *
- * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
- *
- * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- ****/
+ * 
+ * For more information and updates, visit: https://github.com/imariom/restpp
+ */
 
 #pragma once
 #ifndef RESTPP_BASIC_TYPES_H
 #define RESTPP_BASIC_TYPES_H
 
-#include <restpp/core/details/restpp_compat.hpp>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#include <restpp/core/details/restpp_compat.hpp>
 
 #ifndef _WIN32
 #ifndef __STDC_LIMIT_MACROS

@@ -1,23 +1,15 @@
-/***
- * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
- * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
- *
- * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+/**
+ * Copyright (C) 2024 Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt in the project root for details.
  *
  * Protocol independent support for URIs.
- *
- * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
- *
- * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- ****/
+ * 
+ * For more information and updates, visit: https://github.com/imariom/restpp
+ */
 
-
-#ifndef RESTPP_URI_H
-#define RESTPP_URI_H
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
 #pragma once
-#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+#ifndef RESTPP_URI_HPP
+#define RESTPP_URI_HPP
 
 #include <string>
 #include <exception>
@@ -615,7 +607,6 @@ private:
     utility::string_t _uri;
     details::uri_components _components;
 };
-
 } // namespace restpp
 
-#endif // RESTPP_URI_H
+#endif // RESTPP_URI_HPP

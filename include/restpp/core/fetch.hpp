@@ -1,15 +1,11 @@
-/***
- * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
- * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
- *
- * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+/**
+ * Copyright (C) 2024 Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt in the project root for details.
  *
  * Fetch function that will fetches a local or remote resource.
- *
- * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
- *
- * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- ****/
+ * 
+ * For more information and updates, visit: https://github.com/imariom/restpp
+ */
 
 #pragma once
 #ifndef RESTPP_FETCH_HPP
@@ -20,11 +16,14 @@
 
 #include <restpp/core/uri.hpp>
 #include <restpp/core/options.hpp>
-#include <restpp/core/response.hpp>
+#include <restpp/core/http_response.hpp>
 
 namespace restpp
 {
-response fetch(uri _path, options _options = {}) {
+namespace details
+{
+http_response _fetch_remote(uri _uri, request_options _options)
+{
     try {
         boost::asio::io_context io_context;
 
@@ -93,12 +92,19 @@ response fetch(uri _path, options _options = {}) {
 
         // Construct the response object
         return {static_cast<int>(status_code), headers.str(), body.str()};
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e)
+    {
         std::cerr << "Error: " << e.what() << std::endl;
         return {500, "", e.what()};
     }
 }
+}
 
+// http_response fetch(http_request);
+http_response fetch(uri resource_uri, request_options req_options = {})
+{
+}
 } // namespace restpp
 
 #endif // RESTPP_FETCH_HPP

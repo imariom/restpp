@@ -1,15 +1,11 @@
-/***
- * Copyright (C) 2024-present Mário A. Moiane (connect at imariom dot com)
- * Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+/**
+ * Copyright (C) 2024 Mário A. Moiane (connect at imariom dot com)
+ * Licensed under the MIT license. See LICENSE.txt in the project root for details.
  *
- * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
- *
- * Various common utilities.
- *
- * For the latest on this and related APIs, please see: https://github.com/imariom/restpp
- *
- * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- ****/
+ * This file contains common utilities used by the library.
+ * 
+ * For more information and updates, visit: https://github.com/imariom/restpp
+ */
 
 #pragma once
 #ifndef ASYNCRT_UTILS_HPP
@@ -34,6 +30,8 @@
 #endif
 #endif
 
+namespace restpp
+{
 /// Various utilities for string conversions and date and time manipulation.
 namespace utility
 {
@@ -715,5 +713,6 @@ private:
 };
 
 } // namespace utility
+} // namespace restpp
 
 #endif // ASYNCRT_UTILS_HPP
