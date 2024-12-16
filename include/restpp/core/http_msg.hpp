@@ -41,7 +41,7 @@ struct http_version
     /// Creates <c>http_version</c> from an HTTP-Version string, "HTTP" "/" 1*DIGIT "." 1*DIGIT.
     /// </summary>
     /// <returns>Returns a <c>http_version</c> of {0, 0} if not successful.</returns>
-    static _ASYNCRTIMP http_version __cdecl from_string(const std::string& http_version_string)
+    static _ASYNCRTIMP http_version __cdecl fro_string(const std::string& http_version_string)
     {
         std::istringstream str(http_version_string);
         str.imbue(std::locale::classic());
@@ -302,24 +302,13 @@ namespace details
 class http_msg_base
 {
 public:
-    friend class http::client::http_client;
-
     _ASYNCRTIMP http_msg_base();
 
     virtual ~http_msg_base() {}
 
-    http::http_version http_version() const { return m_http_version; }
+    http_version http_version() const { return _http_version; }
 
-    http_headers& headers() { return m_headers; }
-
-    _ASYNCRTIMP void set_body(const concurrency::streams::istream& instream, const utf8string& contentType);
-    _ASYNCRTIMP void set_body(const concurrency::streams::istream& instream, const utf16string& contentType);
-    _ASYNCRTIMP void set_body(const concurrency::streams::istream& instream,
-                              utility::size64_t contentLength,
-                              const utf8string& contentType);
-    _ASYNCRTIMP void set_body(const concurrency::streams::istream& instream,
-                              utility::size64_t contentLength,
-                              const utf16string& contentType);
+    http_headers& headers() { return _headers; }
 
     /// <summary>
     /// Helper function for extract functions. Parses the Content-Type header and check to make sure it matches,
@@ -349,46 +338,46 @@ public:
     /// <summary>
     /// Set the stream through which the message body could be read
     /// </summary>
-    void set_instream(const concurrency::streams::istream& instream) { m_inStream = instream; }
+    void set_instream(const concurrency::streams::istream& instream) { _inStream = instream; }
 
     /// <summary>
     /// Get the stream through which the message body could be read
     /// </summary>
-    const concurrency::streams::istream& instream() const { return m_inStream; }
+    const concurrency::streams::istream& instream() const { return _inStream; }
 
     /// <summary>
     /// Set the stream through which the message body could be written
     /// </summary>
     void set_outstream(const concurrency::streams::ostream& outstream, bool is_default)
     {
-        m_outStream = outstream;
-        m_default_outstream = is_default;
+        _outStream = outstream;
+        _default_outstream = is_default;
     }
 
     /// <summary>
     /// Get the stream through which the message body could be written
     /// </summary>
-    const concurrency::streams::ostream& outstream() const { return m_outStream; }
+    const concurrency::streams::ostream& outstream() const { return _outStream; }
 
     /// <summary>
     /// Sets the compressor for the message body
     /// </summary>
     void set_compressor(std::unique_ptr<http::compression::compress_provider> compressor)
     {
-        m_compressor = std::move(compressor);
+        _compressor = std::move(compressor);
     }
 
     /// <summary>
     /// Gets the compressor for the message body, if any
     /// </summary>
-    std::unique_ptr<http::compression::compress_provider>& compressor() { return m_compressor; }
+    std::unique_ptr<http::compression::compress_provider>& compressor() { return _compressor; }
 
     /// <summary>
     /// Sets the collection of factory classes for decompressors for use with the message body
     /// </summary>
     void set_decompress_factories(const std::vector<std::shared_ptr<http::compression::decompress_factory>>& factories)
     {
-        m_decompressors = factories;
+        _decompressors = factories;
     }
 
     /// <summary>
@@ -396,10 +385,10 @@ public:
     /// </summary>
     const std::vector<std::shared_ptr<http::compression::decompress_factory>>& decompress_factories()
     {
-        return m_decompressors;
+        return _decompressors;
     }
 
-    const pplx::task_completion_event<utility::size64_t>& _get_data_available() const { return m_data_available; }
+    const pplx::task_completion_event<utility::size64_t>& _get_data_available() const { return _data_available; }
 
     /// <summary>
     /// Prepare the message with an output stream to receive network data
@@ -417,7 +406,7 @@ public:
     /// This routine should only be called after a msg (request/response) has been
     /// completely constructed.
     /// </remarks>
-    _ASYNCRTIMP size_t _get_stream_length();
+    _ASYNCRTIMP size_t _get_strea_length();
 
     /// <summary>
     /// Determine the content length
@@ -448,12 +437,12 @@ public:
     /// </remarks>
     _ASYNCRTIMP size_t _get_content_length_and_set_compression();
 
-    void _set_http_version(const http::http_version& http_version) { m_http_version = http_version; }
+    void _set_http_version(const http::http_version& http_version) { _http_version = http_version; }
 
 protected:
-    std::unique_ptr<http::compression::compress_provider> m_compressor;
-    std::unique_ptr<http::compression::decompress_provider> m_decompressor;
-    std::vector<std::shared_ptr<http::compression::decompress_factory>> m_decompressors;
+    std::unique_ptr<http::compression::compress_provider> _compressor;
+    std::unique_ptr<http::compression::decompress_provider> _decompressor;
+    std::vector<std::shared_ptr<http::compression::decompress_factory>> _decompressors;
 
     /// <summary>
     /// Stream to read the message body.
@@ -463,9 +452,9 @@ protected:
     /// Even in the presence of msg body this stream could be invalid. An example
     /// would be when the user sets an ostream for the response. With that API the
     /// user does not provide the ability to read the msg body.
-    /// Thus m_instream is valid when there is a msg body and it can actually be read
+    /// Thus _instream is valid when there is a msg body and it can actually be read
     /// </summary>
-    concurrency::streams::istream m_inStream;
+    concurrency::streams::istream _inStream;
 
     /// <summary>
     /// stream to write the msg body
@@ -473,30 +462,18 @@ protected:
     /// (for http_client). In all the other cases we would construct one to transfer
     /// the data from the network into the message body.
     /// </summary>
-    concurrency::streams::ostream m_outStream;
+    concurrency::streams::ostream _outStream;
 
-    http::http_version m_http_version;
-    http_headers m_headers;
-    bool m_default_outstream;
+    http::http_version _http_version;
+    http_headers _headers;
+    bool _default_outstream;
 
     /// <summary> The TCE is used to signal the availability of the message body. </summary>
-    pplx::task_completion_event<utility::size64_t> m_data_available;
+    pplx::task_completion_event<utility::size64_t> _data_available;
 
     size_t _get_content_length(bool honor_compression);
 };
 
-/// <summary>
-/// Base structure for associating internal server information
-/// with an HTTP request/response.
-/// </summary>
-class _http_server_context
-{
-public:
-    _http_server_context() {}
-    virtual ~_http_server_context() {}
-
-private:
-};
 } // namespace details
 } // namespace restpp
 

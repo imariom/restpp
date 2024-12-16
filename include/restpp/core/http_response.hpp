@@ -39,20 +39,23 @@ public:
 
     void set_reason_phrase(const reason_phrase& reason) { _reason_phrase = reason; }
 
+    // TODO: implement this functioinstreamn
+    utility::string_t body() { throw std::exception{}; }
+
     _ASYNCRTIMP utility::string_t to_string() const
     {
         utility::string_t result(_RESTPPSTR("HTTP/1.1 "));
-        result += utility::conversions::details::to_string_t(m_status_code);
+        result += utility::conversions::details::to_string_t(_status_code);
         result += ' ';
         // If the user didn't explicitly set a reason phrase then we should have it default
         // if they used one of the standard known status codes.
-        if (m_reason_phrase.empty())
+        if (_reason_phrase.empty())
         {
             result += get_default_reason_phrase(status_code());
         }
         else
         {
-            result += m_reason_phrase;
+            result += _reason_phrase;
         }
 
         result += _RESTPPSTR("\r\n");
@@ -60,17 +63,8 @@ public:
         return result;
     }
 
-    _http_server_context* _get_server_context() const { return _server_context.get(); }
-
-    void _set_server_context(std::unique_ptr<details::_http_server_context> server_context)
-    {
-        _server_context = std::move(server_context);
-    }
-
 private:
-    std::unique_ptr<_http_server_context> _server_context;
-
-    status_code _status_code;
+    status_codes _status_code;
     reason_phrase _reason_phrase;
 };
 } // namespace details
@@ -93,125 +87,6 @@ public:
     /// <param name="code">HTTP status code to use in response.</param>
     /// <returns>A new HTTP response.</returns>
     http_response(http::status_code code) : _impl(std::make_shared<details::_http_response>(code)) {}
-
-    /// <summary>
-    /// Creates a 200 OK response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 200 OK.</returns>
-    static http_response ok(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::OK, body);
-    }
-
-    /// <summary>
-    /// Creates a 201 Created response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 201 Created.</returns>
-    static http_response created(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::Created, body);
-    }
-
-    /// <summary>
-    /// Creates a 204 No Content response.
-    /// </summary>
-    /// <returns>An HTTP response with status 204 No Content.</returns>
-    static http_response no_content()
-    {
-        return http_response(status_codes::NoContent);
-    }
-
-    /// <summary>
-    /// Creates a 400 Bad Request response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 400 Bad Request.</returns>
-    static http_response bad_request(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::BadRequest, body);
-    }
-
-    /// <summary>
-    /// Creates a 401 Unauthorized response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 401 Unauthorized.</returns>
-    static http_response unauthorized(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::Unauthorized, body);
-    }
-
-    /// <summary>
-    /// Creates a 403 Forbidden response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 403 Forbidden.</returns>
-    static http_response forbidden(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::Forbidden, body);
-    }
-
-    /// <summary>
-    /// Creates a 404 Not Found response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 404 Not Found.</returns>
-    static http_response not_found(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::NotFound, body);
-    }
-
-    /// <summary>
-    /// Creates a 405 Method Not Allowed response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 405 Method Not Allowed.</returns>
-    static http_response method_not_allowed(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::MethodNotAllowed, body);
-    }
-
-    /// <summary>
-    /// Creates a 409 Conflict response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 409 Conflict.</returns>
-    static http_response conflict(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::Conflict, body);
-    }
-
-    /// <summary>
-    /// Creates a 500 Internal Server Error response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 500 Internal Server Error.</returns>
-    static http_response internal_server_error(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::InternalError, body);
-    }
-
-    /// <summary>
-    /// Creates a 501 Not Implemented response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 501 Not Implemented.</returns>
-    static http_response not_implemented(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::NotImplemented, body);
-    }
-
-    /// <summary>
-    /// Creates a 503 Service Unavailable response with an optional body.
-    /// </summary>
-    /// <param name="body">The optional body of the response.</param>
-    /// <returns>An HTTP response with status 503 Service Unavailable.</returns>
-    static http_response service_unavailable(const utility::string_t& body = U(""))
-    {
-        return http_response(status_codes::ServiceUnavailable, body);
-    }
 
     /// <summary>
     /// Gets the status code of the response message.
@@ -258,6 +133,18 @@ public:
     const http_headers& headers() const { return _impl->headers(); }
 
     /// <summary>
+    /// Produces a stream which the caller may use to retrieve data from an incoming request.
+    /// </summary>
+    /// <returns>A readable, open asynchronous stream.</returns>
+    /// <remarks>
+    /// This cannot be used in conjunction with any other means of getting the body of the request.
+    /// It is not necessary to wait until the message has been sent before starting to write to the
+    /// stream, but it is advisable to do so, since it will allow the network I/O to start earlier
+    /// and the work of sending data can be overlapped with the production of more data.
+    /// </remarks>
+    utility::string_t body() const { return _impl->body(); }
+
+    /// <summary>
     /// Generates a string representation of the message, including the body when possible.
     /// Mainly this should be used for debugging purposes as it has to copy the
     /// message body and doesn't have excellent performance.
@@ -270,11 +157,6 @@ public:
     utility::string_t to_string() const { return _impl->to_string(); }
 
     std::shared_ptr<http::details::_http_response> _get_impl() const { return _impl; }
-    http::details::_http_server_context* _get_server_context() const { return _impl->_get_server_context(); }
-    void _set_server_context(std::unique_ptr<http::details::_http_server_context> server_context)
-    {
-        _impl->_set_server_context(std::move(server_context));
-    }
 
 private:
    std::shared_ptr<details::_http_response> _impl;
